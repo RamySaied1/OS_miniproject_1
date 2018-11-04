@@ -59,7 +59,7 @@ def generate_process(input_file,output_file):
             arrival_time = round(np.random.normal(arrival[0], arrival[1]), 1)
 
         burst_time = round(np.random.normal(burst[0], burst[1]),1)
-        while burst_time < 0:
+        while burst_time <= 0:
             burst_time = round(np.random.normal(burst[0], burst[1]), 1)
 
         prioty_value = np.random.poisson(priority)

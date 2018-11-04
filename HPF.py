@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import queue
-
+import queue as Q
 # assume lowest priority number is high priority
 def HPF(input_file,context_switching):
 
@@ -20,25 +19,34 @@ def HPF(input_file,context_switching):
         Process.arrival_time, Process.priority));
 
     for  i in range(0, num_process):
-        print(process_sorted_list[i].arrival_time,
+        print(process_sorted_list[i].idd,process_sorted_list[i].arrival_time,
               process_sorted_list[i].burst_time, process_sorted_list[i].priority, process_sorted_list[i].start_time, process_sorted_list[i].finish_time)
             
     
     current_time =0
-    PriorityQueue()
+    q = Q.PriorityQueue()
+    result=[]
 
-    for i in range (0,num_process):
-        process_sorted_list[i].start_time = process_sorted_list[i].arrival_time+context_switching
-        process_sorted_list[i].finish_time = process_sorted_list[i].start_time + process_sorted_list[i].burst_time
+    while len(process_sorted_list)>0:
+        if current_time <=process_sorted_list[0].arrival_time:
+            current_time=process_sorted_list[0].arrival_time
 
-
-
-
-
-
+        while (len(process_sorted_list) > 0) and(process_sorted_list[0].arrival_time <= current_time):
+            q.put((process_sorted_list[0].priority,process_sorted_list[0]))
+            process_sorted_list.pop(0)
     
 
+        while not q.empty():
+            priotity,process= q.get()
+            process.start_time=current_time+context_switching
+            process.finish_time=process.start_time+process.burst_time
+            current_time=process.finish_time
+            result.append(process)
 
+
+    for i in range(0,len(result)):
+        print(str(result[i].idd)+" "+str(result[i].start_time)+" "+str(result[i].finish_time)+" ")
+    return result
 
 
 
@@ -55,7 +63,21 @@ class Process:
 
 
 
-HPF("os_project/output.txt",0)
+result=HPF("os_project/output.txt",0)
+y  = []
+start = []
+width = []
+for i in range(0,len(result)):
+    y.append(result[i].idd)
+    start.append(result[i].start_time)
+    width.append(result[i].finish_time-result[i].start_time)
+x1, x2, y1, y2 = plt.axis()
+plt.axis((x1, x2, 0, len(result)))
+plt.figure()
+plt.barh(height=y, width=width , left=start,y=0,align="edge")
+plt.show()
+
+
 
 
 
