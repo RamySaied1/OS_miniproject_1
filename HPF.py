@@ -42,6 +42,9 @@ def HPF(input_file,context_switching):
             process.finish_time=process.start_time+process.burst_time
             current_time=process.finish_time
             result.append(process)
+            while (len(process_sorted_list) > 0) and(process_sorted_list[0].arrival_time <= current_time):
+                q.put((process_sorted_list[0].priority, process_sorted_list[0]))
+                process_sorted_list.pop(0)
 
 
     for i in range(0,len(result)):
