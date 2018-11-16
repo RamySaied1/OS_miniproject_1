@@ -1,5 +1,5 @@
 class Process:
-    def __init__(self, idd,arrival_time, burst_time,priority,start_time,finish_time):
+    def __init__(self, idd,arrival_time, burst_time,priority,start_time=-1,finish_time=-1):
         self.arrival_time = arrival_time
         self.burst_time = burst_time
         self.priority = priority
@@ -8,14 +8,4 @@ class Process:
         self.idd = idd
 
 
-
-def RR():
-    queue = list()
-    in_file = open('output.txt','r')
-    processes = [list(map(float,i.split())) for i in in_file.readlines()[1:]]
-    #process number, arrival time, burst time and priority
-    
-
-
-RR()
 
