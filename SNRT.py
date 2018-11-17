@@ -2,15 +2,17 @@ from Process import Process
 import numpy as np
 #process number, arrival time, burst time and priority.
 def SNRT(processes,context_switching_time):
-    quantum=10000.0
-    for p in processes:
-        quantum=min(p.burst_time,quantum)
-   #assume scheduler check every value that less than minimum running tume process
-    quantum/=2
-
     arrived = list()
     processes.sort(key=lambda elem: (elem.arrival_time,elem.idd))
 
+    #assume scheduler check every value that less than minimum diff between arrival time of two processes
+    quantum=10.0
+    if(len(processes)>1):
+        for i in range(1,len(processes)):
+            diff = processes[i].arrival_time-processes[i-1].arrival_time
+            if(diff):
+                quantum=min(diff,quantum)
+ 
 
     #this variable tell form where i start to insert new processes based on arrival time to avoid inserting low arrival time porcess again
     toArrive=0
