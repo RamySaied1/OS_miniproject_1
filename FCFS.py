@@ -5,24 +5,12 @@ from Process import Process
 
 
 
-def FCFS(input_file, context_switching):
-
-    input = open(input_file, 'r')
-
-    lines = input.readlines()
-    process_list = []
-    num_process = int(lines[0])
-
-    for i in range(0, num_process):
-        line = lines[i+1].split()
-        print(line)
-        process_list.append(Process(int(line[0]), float(
-            line[1]), float(line[2]), float(line[3]), 0, 0))
+def FCFS(process_list, context_switching):
 
     process_sorted_list = sorted(process_list, key=lambda Process: (
         Process.arrival_time, Process.idd))
 
-    for i in range(0, num_process):
+    for i in range(0, len(process_list)):
         print(process_sorted_list[i].idd, process_sorted_list[i].arrival_time,
               process_sorted_list[i].burst_time, process_sorted_list[i].priority, process_sorted_list[i].start_time, process_sorted_list[i].finish_time)
 
@@ -51,13 +39,37 @@ def FCFS(input_file, context_switching):
     for i in range(0, len(result)):
         print(str(result[i].idd)+" "+str(result[i].start_time) +
               " "+str(result[i].finish_time)+" ")
-    return result
+    
+    y = []
+    start = []
+    width = []
+    running_time = {}
+
+    for i in range(0, len(result)):
+        y.append(result[i].idd)
+        start.append(result[i].start_time)
+        width.append(result[i].finish_time-result[i].start_time)
+        running_time[(result[i].start_time,result[i].finish_time)] = result[i].idd
+
+    metric = np.zeros((len(result), 4)).astype(np.float)
+
+    #filling
+    for i in range(len(result)):
+        metric[i, 0] = result[i].idd
+        metric[i, 2] = result[i].finish_time - result[i].arrival_time  # TAT = finish - arrival
+        # Wating = TAT - burst_time
+        metric[i, 1] = metric[i, 2]-result[i].burst_time
+        metric[i, 3] = 1.*metric[i, 2] /result[i].burst_time  # WTAT = TAT/burst_time
+
+    return (metric, running_time)
 
 
 
 
 
-result = FCFS("os_project/output.txt", 0)
+
+
+"""result = FCFS("os_project/output.txt", 0)
 y = []
 start = []
 width = []
@@ -70,3 +82,4 @@ plt.axis((x1, x2, 0, len(result)))
 plt.figure()
 plt.barh(height=y, width=width, left=start, y=0, align="edge")
 plt.show()
+"""

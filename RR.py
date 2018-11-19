@@ -64,6 +64,7 @@ def RR(processes,context_switching_time,quantum):
     metric = np.zeros((len(processes),3)).astype(np.float)
 
     #filling 
+    print(processes)
     for i in range(len(processes)):
         metric[i,1] = finish_time[processes[i].idd]-processes[i].arrival_time # TAT = finish - arrival
         metric[i,0] = metric[i,1] = processes[i].burst_time # Wating = TAT - burst_time

@@ -70,5 +70,5 @@ def generate_process(input_file,output_file):
     output.close()
 
     
-generate_process("os_project/input.txt", "os_project/output.txt")
+generate_process("OS_miniproject_1/input.txt", "OS_miniproject_1/output.txt")
 
