@@ -61,14 +61,15 @@ def RR(processes,context_switching_time,quantum):
             queue.append(queue.pop(0))
     
     #Waiting,Turnaround,WeightedTurnaround
-    metric = np.zeros((len(processes),3)).astype(np.float)
+    metric = np.zeros((len(processes),4)).astype(np.float)
 
     #filling 
-    print(processes)
     for i in range(len(processes)):
-        metric[i,1] = finish_time[processes[i].idd]-processes[i].arrival_time # TAT = finish - arrival
-        metric[i,0] = metric[i,1] = processes[i].burst_time # Wating = TAT - burst_time
-        metric[i,2] = 1.*metric[i,1] / processes[i].burst_time # WTAT = TAT/burst_time
+        metric[i,0] = processes[i].idd
+        metric[i,2] = finish_time[processes[i].idd]-processes[i].arrival_time # TAT = finish - arrival
+        metric[i,1] = metric[i,2] = processes[i].burst_time # Wating = TAT - burst_time
+        metric[i,3] = 1.*metric[i,2] / processes[i].burst_time # WTAT = TAT/burst_time
+   
 
     #print (metric,runing_times)
     return metric,runing_times

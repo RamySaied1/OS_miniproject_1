@@ -16,8 +16,8 @@ class Gui:
         self.window.minsize(width=750, height=600)
         self.window.maxsize(width=750, height=600)
         self.algo = tk.IntVar(self.window,-1)
-        self.file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "OS_miniproject_1/processes.txt"))
-        self.statistics_file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "OS_miniproject_1/statistics.txt"))
+        self.file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "./processes.txt"))
+        self.statistics_file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "./statistics.txt"))
         vcmd=(self.window.register(lambda s,S :s.isdigit() or s=='' or s=='.' and S.count('.')<= 1),'%S','%P')
         self.context_switching_time_entry=tk.Entry(self.window,textvariable=tk.StringVar(self.window,'0'),validate='key',vcmd=vcmd)
         self.quantum_entry=tk.Entry(self.window,textvariable=tk.StringVar(self.window,'2'),validate='key',vcmd=vcmd)
@@ -49,13 +49,13 @@ class Gui:
 
     def statistics(self, metric, output_file):  # to save statistics of running algorithm in specific file
         output = open(output_file, 'w')
-        output.writelines('process_id'+ '\t'+ 'waiting time'+'\t'+ 'TAT'+ '\t'+'WTAT'+'\n')
+        output.writelines('process_id'+ '\t'+ 'waiting time' + '\t'+ 'TAT'+ ' \t'+'WTAT'+'\n')
         sum_tat=0;
         sum_wtat=0;
         for i in range(0, len(metric)):
             sum_tat = sum_tat+metric[i, 2]
             sum_wtat= sum_wtat+metric[i,3]
-            output.writelines(str(int(metric[i, 0]))+ ' '+ str(metric[i, 1])+ ' ' + str(metric[i, 2])+ ' '+ str(round(metric[i,3],3))+ '\n')
+            output.writelines(str(int(metric[i, 0]))+ repr(metric[i, 1]).rjust(14) + repr(metric[i, 2]).rjust(16) + repr(round(metric[i,3],3)).rjust(8)+ '\n')
         
         output .writelines('AVG TAT = '+str(round(sum_tat/len(metric),3)) +'\n')
         output .writelines('AVG WTAT = '+str(round(sum_wtat/len(metric),3))+'\n')
@@ -86,7 +86,6 @@ class Gui:
         try:
             fileName = self.file_name_entry.get()
             statistics_file_name = self.statistics_file_name_entry.get()
-
             context_switching_time = float(self.context_switching_time_entry.get())
             quantum = float(self.quantum_entry.get())
             algo = self.algo.get()
@@ -99,11 +98,9 @@ class Gui:
                 metric, running_times = HPF(processes, context_switching_time)
             elif(algo == 1):
                 metric, running_times = FCFS(processes, context_switching_time)
-
             elif(algo == 2):
                 assert quantum!=0,"Please Enter valid quantum !!!"
                 metric,running_times = RR(processes,context_switching_time,quantum) 
-                print(metric)
             elif(algo == 3):
                 metric,running_times = SNRT(processes,context_switching_time)
 
@@ -129,7 +126,6 @@ class Gui:
 processes=[]
 def main():
     Gui().window.mainloop()
-    #simulate()
 
 
 if __name__ == '__main__':

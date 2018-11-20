@@ -49,7 +49,7 @@ def SNRT(processes,context_switching_time):
         #compare running time of arrived porccesses with remaning time and context swithcing time for current
         for i in range(len(arrived)):
             if(currently_running>=len(arrived) or arrived[i].idd!=arrived[currently_running].idd
-             and arrived[i].burst_time<arrived[currently_running].burst_time + context_switching_time):
+             and arrived[i].burst_time + context_switching_time<arrived[currently_running].burst_time ):
                 currently_running=i
 
         # time before running any process
@@ -75,13 +75,14 @@ def SNRT(processes,context_switching_time):
         runing_times[(startTime,endTime)]= last_proccess_id
         
     #Waiting,Turnaround,WeightedTurnaround
-    metric = np.zeros((len(processes),3)).astype(np.float)
+    metric = np.zeros((len(processes),4)).astype(np.float)
 
     #filling 
     for i in range(len(processes)):
-        metric[i,1] = finish_time[processes[i].idd]-processes[i].arrival_time # TAT = finish - arrival
-        metric[i,0] = metric[i,1] = processes[i].burst_time # Wating = TAT - burst_time
-        metric[i,2] = 1.*metric[i,1] / processes[i].burst_time # WTAT = TAT/burst_time
+        metric[i,0] = processes[i].idd
+        metric[i,2] = finish_time[processes[i].idd]-processes[i].arrival_time # TAT = finish - arrival
+        metric[i,1] = metric[i,2] = processes[i].burst_time # Wating = TAT - burst_time
+        metric[i,3] = 1.*metric[i,2] / processes[i].burst_time # WTAT = TAT/burst_time
    
     return metric,runing_times
     
