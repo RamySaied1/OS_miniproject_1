@@ -4,6 +4,7 @@ from RR import RR
 from SNRT import SNRT
 from HPF import HPF
 from FCFS import FCFS
+from process_generator import generate_process
 import tkinter as tk
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -16,16 +17,23 @@ class Gui:
         self.window.minsize(width=750, height=600)
         self.window.maxsize(width=750, height=600)
         self.algo = tk.IntVar(self.window,-1)
-        self.file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "./processes.txt"))
+        self.generate_input_file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "./input.txt"))
+        self.generate_output_file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "./output.txt"))
+        self.processes_file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "./processes.txt"))
         self.statistics_file_name_entry = tk.Entry(self.window, textvariable=tk.StringVar(self.window, "./statistics.txt"))
         vcmd=(self.window.register(lambda s,S :s.isdigit() or s=='' or s=='.' and S.count('.')<= 1),'%S','%P')
         self.context_switching_time_entry=tk.Entry(self.window,textvariable=tk.StringVar(self.window,'0'),validate='key',vcmd=vcmd)
         self.quantum_entry=tk.Entry(self.window,textvariable=tk.StringVar(self.window,'2'),validate='key',vcmd=vcmd)
         
         row=0
-        tk.Label(self.window,text='file name:',justify = tk.LEFT).grid(row=row,column=0,sticky='W',padx=10);row+=1
-        self.file_name_entry.grid(row=row,column=0,sticky='W',padx=10);row+=5
-        tk.Label(self.window, text='statistics file name:', justify=tk.LEFT).grid(row=row, column=0, sticky='W', padx=10);row += 1
+        tk.Label(self.window,text='generate input file:',justify = tk.LEFT).grid(row=row,column=0,sticky='W',padx=10);row+=1
+        self.generate_input_file_name_entry.grid(row=row,column=0,sticky='W',padx=10);row+=5
+        tk.Label(self.window,text='generate output file:',justify = tk.LEFT).grid(row=row,column=0,sticky='W',padx=10);row+=1
+        self.generate_output_file_name_entry.grid(row=row,column=0,sticky='W',padx=10);row+=5        
+        tk.Button(self.window,text="Generate",command=self.generate).grid(row=row,column=0,padx=10,pady=1,sticky='W');row+=10
+        tk.Label(self.window,text='processes file:',justify = tk.LEFT).grid(row=row,column=0,sticky='W',padx=10);row+=1
+        self.processes_file_name_entry.grid(row=row,column=0,sticky='W',padx=10);row+=5
+        tk.Label(self.window, text='statistics file:', justify=tk.LEFT).grid(row=row, column=0, sticky='W', padx=10);row += 1
         self.statistics_file_name_entry.grid(row=row, column=0, sticky='W', padx=10);row += 5
         tk.Label(self.window,text='context switching time:',justify = tk.LEFT).grid(row=row,column=0,sticky='W',padx=10);row+=1
         self.context_switching_time_entry.grid(row=row,column=0,sticky='W',padx=10);row+=5
@@ -62,8 +70,6 @@ class Gui:
         output .writelines('AVG WTAT = '+str(round(sum_wtat/len(metric),3))+'\n')
 
 
-
-
     def barChart(self,running_times):
         # al x values , y values and widthes
         xs = []
@@ -85,7 +91,7 @@ class Gui:
 
     def simulate(self):
         try:
-            fileName = self.file_name_entry.get()
+            fileName = self.processes_file_name_entry.get()
             statistics_file_name = self.statistics_file_name_entry.get()
             context_switching_time = float(self.context_switching_time_entry.get())
             quantum = float(self.quantum_entry.get())
@@ -109,6 +115,17 @@ class Gui:
             self.barChart(running_times)
         except Exception as err:
             tk.messagebox.showerror("Error",str(err))
+
+    def generate(self):
+        try:
+            in_file = self.generate_input_file_name_entry.get()
+            out_file = self.generate_output_file_name_entry.get()
+            print(in_file,out_file)
+            generate_process(in_file,out_file)
+            tk.messagebox.showinfo("","Proccesses Generated")
+        except Exception as err:
+            tk.messagebox.showerror("Error",str(err))
+
 
     def readProcess(self,filename):
         f=open(filename,'r')

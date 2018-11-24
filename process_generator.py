@@ -4,11 +4,11 @@ import os
 
 def generate_process(input_file,output_file):
 
-    input  = open(input_file, 'r') 
+    _input = open(input_file, 'r') 
 
-    lines=input.readlines()
+    lines=_input.readlines()
 
-    ## read and check on input file parameters
+    ## read and check on _input file parameters
     if len(lines)<4 :
         print(" file size > 4 lines")
         return
@@ -46,7 +46,7 @@ def generate_process(input_file,output_file):
             print("error in  burst time parameters")
             return
 
-    input.close()
+    _input.close()
 
     ### generate process and write them to the output file
     output = open(output_file, 'w')
@@ -68,7 +68,4 @@ def generate_process(input_file,output_file):
 
                           
     output.close()
-
-    
-generate_process("OS_miniproject_1/input.txt", "OS_miniproject_1/output.txt")
 

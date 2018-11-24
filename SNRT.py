@@ -14,7 +14,7 @@ def SNRT(processes,context_switching_time):
             if(diff):
                 quantum=min(diff,quantum)
     '''
-    quantum=.1 # assume time step = .1 so arival times of processes will be big enough
+    quantum=.05 #assume time step = .05 so arival times of processes will be big enough
 
     #this variable tell form where i start to insert new processes based on arrival time to avoid inserting low arrival time porcess again
     toArrive=0
@@ -53,6 +53,7 @@ def SNRT(processes,context_switching_time):
             if(currently_running>=len(arrived) or arrived[i].idd!=arrived[currently_running].idd
              and arrived[i].burst_time + context_switching_time<arrived[currently_running].burst_time ):
                 currently_running=i
+            
 
         # time before running any process
         if(last_proccess_id!=arrived[currently_running].idd):
