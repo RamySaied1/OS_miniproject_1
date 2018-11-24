@@ -49,15 +49,16 @@ class Gui:
 
     def statistics(self, metric, output_file):  # to save statistics of running algorithm in specific file
         output = open(output_file, 'w')
-        output.writelines('process_id'+ '\t'+ 'waiting time' + '\t'+ 'TAT'+ ' \t'+'WTAT'+'\n')
+        output.writelines('process_id'.ljust(15) + 'waiting time'.ljust(15) + 'TAT'.ljust(15)+'WTAT'.ljust(15)+'\n')
         sum_tat=0;
         sum_wtat=0;
         for i in range(0, len(metric)):
             sum_tat = sum_tat+metric[i, 2]
             sum_wtat= sum_wtat+metric[i,3]
-            output.writelines(str(int(metric[i, 0]))+'\t'+ str(round(metric[i, 1],3)) +'\t'+ str(round(metric[i, 2],3))+ '\t' + str(round(metric[i,3],3))+'\n')
+            output.writelines(str(int(metric[i, 0])).ljust(15)+ str(round(metric[i, 1],3)).ljust(15)
+            + str(round(metric[i, 2],3)).ljust(15) + str(round(metric[i,3],3)) +'\n')
         
-        output .writelines('AVG TAT = '+str(round(sum_tat/len(metric),3)) +'\n')
+        output .writelines('\nAVG TAT = '+str(round(sum_tat/len(metric),3)) +'\n')
         output .writelines('AVG WTAT = '+str(round(sum_wtat/len(metric),3))+'\n')
 
 

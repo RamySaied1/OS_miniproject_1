@@ -33,7 +33,8 @@ def RR(processes,context_switching_time,quantum):
         last_proccess_id = queue[0].idd 
         if(curr_porccess_finsihed):
             time += queue[0].burst_time
-            finish_time[queue[0].idd]=time            
+            finish_time[queue[0].idd]=time
+            queue[0].burst_time=0            
             queue.pop(0)
             finish+=1
         else: 

@@ -6,13 +6,15 @@ def SNRT(processes,context_switching_time):
     processes.sort(key=lambda elem: (elem.arrival_time,elem.idd))
     burst_times =[i.burst_time for i in processes]
     #assume scheduler check every value that less than minimum diff between arrival time of two processes
+    '''
     quantum=10.0
     if(len(processes)>1):
         for i in range(1,len(processes)):
             diff = processes[i].arrival_time-processes[i-1].arrival_time
             if(diff):
                 quantum=min(diff,quantum)
- 
+    '''
+    quantum=.1 # assume time step = .1 so arival times of processes will be big enough
 
     #this variable tell form where i start to insert new processes based on arrival time to avoid inserting low arrival time porcess again
     toArrive=0
