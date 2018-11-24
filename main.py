@@ -55,7 +55,7 @@ class Gui:
         for i in range(0, len(metric)):
             sum_tat = sum_tat+metric[i, 2]
             sum_wtat= sum_wtat+metric[i,3]
-            output.writelines(str(int(metric[i, 0]))+ repr(metric[i, 1]).rjust(14) + repr(metric[i, 2]).rjust(16) + repr(round(metric[i,3],3)).rjust(8)+ '\n')
+            output.writelines(str(int(metric[i, 0]))+'\t'+ str(round(metric[i, 1],3)) +'\t'+ str(round(metric[i, 2],3))+ '\t' + str(round(metric[i,3],3))+'\n')
         
         output .writelines('AVG TAT = '+str(round(sum_tat/len(metric),3)) +'\n')
         output .writelines('AVG WTAT = '+str(round(sum_wtat/len(metric),3))+'\n')

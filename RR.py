@@ -4,6 +4,7 @@ import numpy as np
 def RR(processes,context_switching_time,quantum):
     queue = list()
     processes.sort(key=lambda elem: (elem.arrival_time,elem.idd))
+    burst_times =[i.burst_time for i in processes]
     #for i in processes:
     #    print(i.idd,i.arrival_time,i.burst_time,i.priority)
     
@@ -67,8 +68,8 @@ def RR(processes,context_switching_time,quantum):
     for i in range(len(processes)):
         metric[i,0] = processes[i].idd
         metric[i,2] = finish_time[processes[i].idd]-processes[i].arrival_time # TAT = finish - arrival
-        metric[i,1] = metric[i,2] = processes[i].burst_time # Wating = TAT - burst_time
-        metric[i,3] = 1.*metric[i,2] / processes[i].burst_time # WTAT = TAT/burst_time
+        metric[i,1] = metric[i,2] - burst_times[i] # Wating = TAT - burst_time
+        metric[i,3] = 1.*metric[i,2] / burst_times[i] # WTAT = TAT/burst_time
    
 
     #print (metric,runing_times)

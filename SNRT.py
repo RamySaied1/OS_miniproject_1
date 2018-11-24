@@ -4,7 +4,7 @@ import numpy as np
 def SNRT(processes,context_switching_time):
     arrived = list()
     processes.sort(key=lambda elem: (elem.arrival_time,elem.idd))
-
+    burst_times =[i.burst_time for i in processes]
     #assume scheduler check every value that less than minimum diff between arrival time of two processes
     quantum=10.0
     if(len(processes)>1):
@@ -81,8 +81,8 @@ def SNRT(processes,context_switching_time):
     for i in range(len(processes)):
         metric[i,0] = processes[i].idd
         metric[i,2] = finish_time[processes[i].idd]-processes[i].arrival_time # TAT = finish - arrival
-        metric[i,1] = metric[i,2] = processes[i].burst_time # Wating = TAT - burst_time
-        metric[i,3] = 1.*metric[i,2] / processes[i].burst_time # WTAT = TAT/burst_time
+        metric[i,1] = metric[i,2] - burst_times[i] # Wating = TAT - burst_time
+        metric[i,3] = 1.*metric[i,2] / burst_times[i] # WTAT = TAT/burst_time
    
     return metric,runing_times
     
